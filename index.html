@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sayur Mpok Nana - Fresh Delivered</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #98FB98 50%, #F0F8FF 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated cloud background */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .cloud:before {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+        }
+
+        .cloud:nth-child(1) {
+            width: 100px;
+            height: 50px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .cloud:nth-child(1):before {
+            width: 80px;
+            height: 80px;
+            top: -40px;
+            left: 10px;
+        }
+
+        .cloud:nth-child(2) {
+            width: 80px;
+            height: 40px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .cloud:nth-child(2):before {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            right: 15px;
+        }
+
+        .cloud:nth-child(3) {
+            width: 60px;
+            height: 30px;
+            top: 40%;
+            left: 70%;
+            animation-delay: 6s;
+        }
+
+        .cloud:nth-child(3):before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 10px;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateX(0px) translateY(0px);
+            }
+
+            25% {
+                transform: translateX(10px) translateY(-10px);
+            }
+
+            50% {
+                transform: translateX(-5px) translateY(-5px);
+            }
+
+            75% {
+                transform: translateX(-10px) translateY(5px);
+            }
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo:before {
+            content: '☁️';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 24px;
+            animation: bounce 2s infinite;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .title {
+            font-size: 28px;
+            color: #2E8B57;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #228B22;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            animation: slideUp 0.8s ease-out 0.3s both;
+        }
+
+        .menu-item {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(46, 139, 87, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            color: #2E8B57;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(50, 205, 50, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: #32CD32;
+        }
+
+        .menu-item.primary {
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            color: white;
+            border-color: #228B22;
+        }
+
+        .menu-item.primary:hover {
+            background: linear-gradient(45deg, #228B22, #32CD32);
+        }
+
+        .menu-item .emoji {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .product-showcase {
+            margin-top: 40px;
+            animation: slideUp 0.8s ease-out 0.6s both;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card .emoji {
+            font-size: 36px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .product-card .name {
+            font-size: 12px;
+            color: #2E8B57;
+            font-weight: 600;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+
+        .social-link:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-link.whatsapp {
+            background: linear-gradient(45deg, #25D366, #128C7E);
+        }
+
+        .social-link.instagram {
+            background: linear-gradient(45deg, #e4405f, #833ab4);
+        }
+
+        .social-link.website {
+            background: linear-gradient(45deg, #4285f4, #34a853);
+        }
+
+        .footer-text {
+            text-align: center;
+            color: #2E8B57;
+            font-size: 14px;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+
+        .three-dots {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #32CD32;
+            font-size: 18px;
+            opacity: 0.7;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-5px) rotate(10deg);
+            }
+        }
+
+        .delivery-badge {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .menu-item {
+                padding: 18px;
+                font-size: 16px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-shapes">
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">Sayur Mpok Nana</div>
+            <h1 class="title">Sayur Mpok Nana (powered by Toko Jibs)</h1>
+            <p class="subtitle">Fresh vegetables, meat & fruits delivered</p>
+            <div class="delivery-badge">🚚 Free Delivery Available</div>
+        </div>
+
+        <div class="menu-container">
+            <div class="menu-item" onclick="showAlert('Fresh Vegetables')">
+                <span class="emoji">🥬</span>Fresh Vegetables
+                <span class="three-dots">⋮</span>
+            </div>
+
+            <div class="menu-item primary" onclick="showAlert('Shop Online')">
+                <span class="emoji">🛒</span>Shop Online
+                <span class="three-dots">⋮</span>
+            </div>
+
+            <div class="menu-item" onclick="showAlert('Premium Meat')">
+                <span class="emoji">🥩</span>Premium Meat
+                <span class="three-dots">⋮</span>
+            </div>
+
+            <div class="menu-item" onclick="showAlert('Fresh Fruits')">
+                <span class="emoji">🍎</span>Fresh Fruits
+                <span class="three-dots">⋮</span>
+            </div>
+        </div>
+
+        <div class="product-showcase">
+            <div class="product-grid">
+                <div class="product-card" onclick="showAlert('Tomatoes')">
+                    <span class="emoji">🍅</span>
+                    <div class="name">Tomatoes</div>
+                </div>
+                <div class="product-card" onclick="showAlert('Carrots')">
+                    <span class="emoji">🥕</span>
+                    <div class="name">Carrots</div>
+                </div>
+                <div class="product-card" onclick="showAlert('Beef')">
+                    <span class="emoji">🥩</span>
+                    <div class="name">Fresh Beef</div>
+                </div>
+                <div class="product-card" onclick="showAlert('Apples')">
+                    <span class="emoji">🍎</span>
+                    <div class="name">Apples</div>
+                </div>
+                <div class="product-card" onclick="showAlert('Broccoli')">
+                    <span class="emoji">🥦</span>
+                    <div class="name">Broccoli</div>
+                </div>
+                <div class="product-card" onclick="showAlert('Chicken')">
+                    <span class="emoji">🍗</span>
+                    <div class="name">Chicken</div>
+                </div>
+            </div>
+
+            <div class="social-links">
+                <a href="https://wa.me/628578160116" class="social-link whatsapp" target="_blank" aria-label="WhatsApp">
+                    💬
+                </a>
+                <a href="https://instagram.com/jibrilhp" class="social-link instagram" target="_blank"
+                    aria-label="Instagram">
+                    📷
+                </a>
+                <a href="https://cloudveggies.com" class="social-link website" target="_blank" aria-label="Website">
+                    🌐
+                </a>
+            </div>
+
+            <div class="footer-text">
+                📍 Fresh delivery daily | 🕐 Open 7AM - 9PM by whatsapp
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showAlert(item) {
+            const messages = {
+                'Fresh Vegetables': '🥬 Browse our selection of farm-fresh vegetables delivered daily!',
+                'Shop Online': '🛒 Order online for quick delivery or pickup!',
+                'Premium Meat': '🥩 Quality meat sourced from trusted local farms!',
+                'Fresh Fruits': '🍎 Sweet, juicy fruits picked at peak ripeness!',
+                'Tomatoes': '🍅 Fresh, ripe tomatoes - perfect for salads and cooking!',
+                'Carrots': '🥕 Crunchy, sweet carrots - great for snacking!',
+                'Beef': '🥩 Premium beef cuts - tender and flavorful!',
+                'Apples': '🍎 Crisp, sweet apples - nature\'s perfect snack!',
+                'Broccoli': '🥦 Fresh broccoli - packed with nutrients!',
+                'Chicken': '🍗 Free-range chicken - healthy and delicious!'
+            };
+
+            alert(messages[item] || 'Available fresh daily!');
+        }
+
+        // Add floating veggie particles
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.97) {
+                createVeggieParticle(e.clientX, e.clientY);
+            }
+        });
+
+        function createVeggieParticle(x, y) {
+            const veggies = ['🥕', '🥬', '🍅', '🥦', '🍎', '🥩'];
+            const veggie = veggies[Math.floor(Math.random() * veggies.length)];
+
+            const particle = document.createElement('div');
+            particle.textContent = veggie;
+            particle.style.cssText = `
+                position: fixed;
+                left: ${x}px;
+                top: ${y}px;
+                font-size: 16px;
+                pointer-events: none;
+                z-index: 1000;
+                animation: floatUp 1.5s ease-out forwards;
+            `;
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 1500);
+        }
+
+        // Add floating animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes floatUp {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(-100px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add periodic cloud generation
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                createCloud();
+            }
+        }, 3000);
+
+        function createCloud() {
+            const cloud = document.createElement('div');
+            cloud.className = 'cloud';
+            cloud.style.cssText = `
+                width: ${60 + Math.random() * 40}px;
+                height: ${30 + Math.random() * 20}px;
+                top: ${Math.random() * 100}%;
+                left: -100px;
+                animation: cloudMove 15s linear forwards;
+            `;
+
+            document.querySelector('.bg-shapes').appendChild(cloud);
+
+            setTimeout(() => {
+                cloud.remove();
+            }, 15000);
+        }
+
+        const cloudStyle = document.createElement('style');
+        cloudStyle.textContent = `
+            @keyframes cloudMove {
+                0% { left: -100px; }
+                100% { left: 100vw; }
+            }
+        `;
+        document.head.appendChild(cloudStyle);
+    </script>
+</body>
+
+</html>
