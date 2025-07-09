@@ -40,7 +40,10 @@
             color: #333;
             display: flex;
             justify-content: center;
-            align-items: stretch
+            align-items: stretch overflow-y: auto;
+            /* <-- NEW */
+            overscroll-behavior: none;
+            /* optional but nice on mobile */
         }
 
         /* MOBILE FRAME */
@@ -395,6 +398,103 @@
             cursor: pointer
         }
 
+        /* every screen already inherits this – repeat only if missing */
+        .screen {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #F7FDF7;
+            /* same palette as other screens */
+            overflow-y: auto;
+            /* critical: lets the list scroll */
+        }
+
+        /* optional – matches your cart-screen header */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .top-bar__title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2E8B57;
+        }
+
+        .back-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #2E8B57;
+        }
+
+        /* order list / cards (re-use from previous answer) */
+        .order-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px 16px 40px;
+            /* bottom padding so last card isn’t under nav */
+        }
+
+        .order-card {
+            background: #fff;
+            border: 2px solid rgba(46, 139, 87, .25);
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: box-shadow .25s;
+        }
+
+        .order-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .15);
+        }
+
+        .order-info {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .order-emoji {
+            font-size: 26px
+        }
+
+        .order-text {
+            display: flex;
+            flex-direction: column
+        }
+
+        .order-status {
+            font-weight: 600;
+            color: #2E8B57
+        }
+
+        .order-meta {
+            font-size: 12px;
+            color: #666
+        }
+
+        .chevron {
+            font-size: 26px;
+            color: rgba(0, 0, 0, .35)
+        }
+
+
         /* PROFILE */
         .profile-box {
             padding: 20px;
@@ -483,6 +583,48 @@
                 <button class="btn-checkout" onclick="pay()" id="pay-btn">Bayar Sekarang</button>
             </div>
         </section>
+
+        <!-- ===================================================== -->
+        <!--  R I W A Y A T   B E L A N J A   S C R E E N          -->
+        <!-- ===================================================== -->
+        <section class="screen" id="history-screen" style="display:none">
+            <!-- top-bar / header (same markup as cart screen) -->
+            <header class="top-bar">
+                <button class="back-btn" onclick="showScreen('home')">‹</button>
+                <h2 class="top-bar__title">Riwayat Belanja</h2>
+            </header>
+
+            <!-- order list – scrolls independently -->
+            <ul class="order-list">
+                <!-- sample order card #1 -->
+                <li class="order-card" onclick="openOrderDetail(1001)">
+                    <div class="order-info">
+                        <span class="order-emoji">🥔</span>
+                        <div class="order-text">
+                            <span class="order-status">Pesanan Sudah Diterima</span>
+                            <span class="order-meta">08 Feb, 11 : 57 • 3 Produk</span>
+                        </div>
+                    </div>
+                    <span class="chevron">›</span>
+                </li>
+
+                <!-- sample order card #2 -->
+                <li class="order-card" onclick="openOrderDetail(1000)">
+                    <div class="order-info">
+                        <span class="order-emoji">🥕</span>
+                        <div class="order-text">
+                            <span class="order-status">Dalam Pengiriman</span>
+                            <span class="order-meta">07 Feb, 18 : 22 • 5 Produk</span>
+                        </div>
+                    </div>
+                    <span class="chevron">›</span>
+                </li>
+
+                <!-- repeat / loop as needed -->
+            </ul>
+        </section>
+
+
 
         <!-- =================  PROFILE  ================= -->
         <section class="screen" id="profile-screen">
@@ -581,6 +723,18 @@
             // active nav highlight
             document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.screen === screen));
         }
+
+        function showScreen(name) {
+            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+            document.getElementById(name + '-screen').style.display = 'block';
+        }
+
+        /* called from each order card */
+        function openOrderDetail(orderId) {
+            alert('Open detail for order #' + orderId);
+            // navigate or build a detail screen here
+        }
+
 
         // Render cart
         function renderCart() {
