@@ -40,7 +40,7 @@
             color: #333;
             display: flex;
             justify-content: center;
-            align-items: stretch overflow-y: auto;
+            align-items: stretch; overflow-y: auto;
             /* <-- NEW */
             overscroll-behavior: none;
             /* optional but nice on mobile */
@@ -545,8 +545,8 @@
         <section class="screen active" id="home-screen">
             <header>
                 <div class="row between">
-                    <div class="row" style="gap:6px;font-size:12px">📍<div><strong>Sayur Mpok Nana</strong><span
-                                style="display:block;font-size:10px;opacity:.8">Jl. Raya Bogor 88</span></div>
+                    <div class="row" style="gap:6px;font-size:12px">📍<div><strong>Toko Mpok Nana</strong><span
+                                style="display:block;font-size:10px;opacity:.8">Cilandak, Jakarta Selatan</span></div>
                     </div>
                     <button class="chat-btn">💬 Chat CS</button>
                 </div>
@@ -636,7 +636,7 @@
                 <div class="avatar">👩‍🍳</div>
                 <h3>Mba Nana</h3>
                 <p>Pedagang Sayur • Jakarta Timur</p>
-                <button onclick="alert('Fitur segera hadir ✨')">Edit Profil</button>
+                <button onclick="editProfile()">Edit Profil</button>
             </div>
         </section>
 
