@@ -1,0 +1,868 @@
+<!--  Toko Mpok Nana – Single‑page mobile shop (home ▸ kategori ▸ cart ▸ profile)  -->
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toko Mpok Nana – Preorder</title>
+
+    <!-- ==========  DESIGN TOKENS & RESET  ========== -->
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --pri: #1e90ff;
+            /* biru utama */
+            --pri-dark: #1e3c72;
+            --sec: #4caf50;
+            /* hijau segar */
+            --warn: #e74c3c;
+            /* merah harga */
+            --radius: 14px;
+            --shadow: 0 3px 12px rgba(0, 0, 0, .12);
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            font: 14px/1.4 "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #87ceeb 0%, #98fb98 50%, #f0f8ff 100%);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: stretch overflow-y: auto;
+            /* <-- NEW */
+            overscroll-behavior: none;
+            /* optional but nice on mobile */
+        }
+
+        /* MOBILE FRAME */
+        .container {
+            width: 100%;
+            max-width: 430px;
+            min-height: 100%;
+            background: rgba(255, 255, 255, .96);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden
+        }
+
+        /* GENERIC SCREEN */
+        .screen {
+            display: none;
+            min-height: 100%;
+            overflow-y: auto;
+            padding-bottom: 90px
+        }
+
+        .screen.active {
+            display: block
+        }
+
+        /* STICKY HEADER (shared) */
+        header {
+            background: linear-gradient(135deg, var(--pri-dark) 0%, #2a5298 100%);
+            color: #fff;
+            padding: 18px 14px;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .1)
+        }
+
+        .row {
+            display: flex;
+            align-items: center
+        }
+
+        .between {
+            justify-content: space-between
+        }
+
+        .chat-btn {
+            border: none;
+            background: rgba(255, 255, 255, .22);
+            color: #fff;
+            border-radius: 20px;
+            padding: 6px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: .25s
+        }
+
+        .chat-btn:hover {
+            background: rgba(255, 255, 255, .35);
+            transform: translateY(-1px)
+        }
+
+        .search {
+            position: relative;
+            margin-top: 12px
+        }
+
+        .search input {
+            width: 100%;
+            padding: 11px 18px 11px 44px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, .9);
+            font-size: 13px;
+            outline: none;
+            transition: .25s
+        }
+
+        .search input:focus {
+            background: #fff;
+            box-shadow: 0 0 0 2px rgba(30, 144, 255, .3)
+        }
+
+        .search svg {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            fill: #666
+        }
+
+        /* PROMO BANNER */
+        .promo {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            margin: 16px;
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, .3)
+        }
+
+        .promo-title {
+            font-size: 18px;
+            font-weight: 700
+        }
+
+        .promo-sub {
+            font-size: 14px;
+            opacity: .95;
+            margin-top: 4px
+        }
+
+        /* GRIDS */
+        .grid {
+            display: grid;
+            gap: 14px;
+            margin: 0 16px
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr)
+        }
+
+        /* CATEGORY & PRODUCT CARDS */
+        .card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 14px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(30, 144, 255, .08);
+            cursor: pointer;
+            transition: .25s
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .14);
+            border-color: var(--pri)
+        }
+
+        .category-icon {
+            font-size: 34px;
+            margin-bottom: 6px
+        }
+
+        .card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50
+        }
+
+        .card p {
+            font-size: 11px;
+            color: #7f8c8d
+        }
+
+        /* product specifics */
+        .product-img {
+            height: 110px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            position: relative;
+            border-radius: var(--radius) var(--radius) 0 0
+        }
+
+        .fresh {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: var(--sec);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px
+        }
+
+        .quality {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--sec);
+            border: 2px solid #fff
+        }
+
+        .product-info {
+            padding-top: 10px
+        }
+
+        .product-price {
+            font-weight: 700;
+            color: var(--warn);
+            margin: 4px 0 2px
+        }
+
+        .btn-add {
+            margin-top: 6px;
+            width: 100%;
+            padding: 7px 10px;
+            font-size: 11px;
+            border: none;
+            border-radius: 13px;
+            background: var(--sec);
+            color: #fff;
+            cursor: pointer;
+            transition: .2s
+        }
+
+        /* FLOATING CART */
+        .fab {
+            position: fixed;
+            bottom: 98px;
+            right: 22px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--pri-dark) 0%, #2a5298 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(30, 60, 114, .45);
+            cursor: pointer;
+            z-index: 30;
+            transition: .25s
+        }
+
+        .fab:hover {
+            transform: scale(1.08)
+        }
+
+        .fab svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff
+        }
+
+        .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--warn);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center
+        }
+
+        /* BOTTOM NAV */
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: #fff;
+            padding: 10px 20px;
+            border-top: 1px solid rgba(30, 144, 255, .1);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, .08);
+            z-index: 40
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            color: #7f8c8d;
+            text-decoration: none;
+            transition: .25s
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor
+        }
+
+        .nav-item.active {
+            color: var(--pri)
+        }
+
+        .nav-item:active {
+            transform: translateY(1px)
+        }
+
+        /* CART & CHECKOUT */
+        .cart-content {
+            padding: 18px
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px
+        }
+
+        .qty {
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .qty button {
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 50%;
+            background: var(--pri);
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            line-height: 0
+        }
+
+        .subtotal {
+            text-align: right;
+            font-weight: 700;
+            margin: 18px 0 8px
+        }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--pri-dark);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        /* every screen already inherits this – repeat only if missing */
+        .screen {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #F7FDF7;
+            /* same palette as other screens */
+            overflow-y: auto;
+            /* critical: lets the list scroll */
+        }
+
+        /* optional – matches your cart-screen header */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .top-bar__title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2E8B57;
+        }
+
+        .back-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #2E8B57;
+        }
+
+        /* order list / cards (re-use from previous answer) */
+        .order-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px 16px 40px;
+            /* bottom padding so last card isn’t under nav */
+        }
+
+        .order-card {
+            background: #fff;
+            border: 2px solid rgba(46, 139, 87, .25);
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: box-shadow .25s;
+        }
+
+        .order-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .15);
+        }
+
+        .order-info {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .order-emoji {
+            font-size: 26px
+        }
+
+        .order-text {
+            display: flex;
+            flex-direction: column
+        }
+
+        .order-status {
+            font-weight: 600;
+            color: #2E8B57
+        }
+
+        .order-meta {
+            font-size: 12px;
+            color: #666
+        }
+
+        .chevron {
+            font-size: 26px;
+            color: rgba(0, 0, 0, .35)
+        }
+
+
+        /* PROFILE */
+        .profile-box {
+            padding: 20px;
+            text-align: center
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 32px;
+            margin: 0 auto 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .15)
+        }
+
+        .profile-box h3 {
+            margin-bottom: 4px;
+            font-size: 18px
+        }
+
+        .profile-box p {
+            font-size: 12px;
+            color: #666
+        }
+
+        .profile-box button {
+            margin-top: 14px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background: var(--pri);
+            color: #fff;
+            font-size: 13px;
+            cursor: pointer
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- =================  HOME / KATEGORI  ================= -->
+        <section class="screen active" id="home-screen">
+            <header>
+                <div class="row between">
+                    <div class="row" style="gap:6px;font-size:12px">📍<div><strong>Sayur Mpok Nana</strong><span
+                                style="display:block;font-size:10px;opacity:.8">Jl. Raya Bogor 88</span></div>
+                    </div>
+                    <button class="chat-btn">💬 Chat CS</button>
+                </div>
+                <div class="search"><svg viewBox="0 0 24 24">
+                        <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28h.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                    </svg><input id="search" type="text" placeholder="Cari sayur, buah, bumbu…"></div>
+            </header>
+
+            <!-- Banner -->
+            <section class="promo">
+                <div class="promo-title">🥬 SAYUR SEGAR HARI INI</div>
+                <div class="promo-sub">Diskon 30% untuk semua sayur!</div>
+            </section>
+
+            <!-- Kategori -->
+            <h3 style="margin:0 16px 10px;font-size:18px;font-weight:700;color:#2c3e50">Kategori Pilihan</h3>
+            <div class="grid grid-2" id="cat-grid"></div>
+
+            <!-- Terlaris -->
+            <h3 style="margin:22px 16px 10px;font-size:18px;font-weight:700;color:#2c3e50">Produk Terlaris</h3>
+            <div class="grid grid-2" id="product-grid"></div>
+        </section>
+
+        <!-- =================  CART  ================= -->
+        <section class="screen" id="cart-screen">
+            <header class="row between">
+                <h2 style="font-size:18px">🛒 Keranjang</h2><button class="chat-btn" onclick="show('home')">← Belanja
+                    lagi</button>
+            </header>
+            <div class="cart-content">
+                <div id="cart-items"></div>
+                <div class="subtotal">Subtotal: <span id="subtotal">Rp0</span></div>
+                <button class="btn-checkout" onclick="pay()" id="pay-btn">Bayar Sekarang</button>
+            </div>
+        </section>
+
+        <!-- ===================================================== -->
+        <!--  R I W A Y A T   B E L A N J A   S C R E E N          -->
+        <!-- ===================================================== -->
+        <section class="screen" id="history-screen" style="display:none">
+            <!-- top-bar / header (same markup as cart screen) -->
+            <header class="top-bar">
+                <button class="back-btn" onclick="showScreen('home')">‹</button>
+                <h2 class="top-bar__title">Riwayat Belanja</h2>
+            </header>
+
+            <!-- order list – scrolls independently -->
+            <ul class="order-list">
+                <!-- sample order card #1 -->
+                <li class="order-card" onclick="openOrderDetail(1001)">
+                    <div class="order-info">
+                        <span class="order-emoji">🥔</span>
+                        <div class="order-text">
+                            <span class="order-status">Pesanan Sudah Diterima</span>
+                            <span class="order-meta">08 Feb, 11 : 57 • 3 Produk</span>
+                        </div>
+                    </div>
+                    <span class="chevron">›</span>
+                </li>
+
+                <!-- sample order card #2 -->
+                <li class="order-card" onclick="openOrderDetail(1000)">
+                    <div class="order-info">
+                        <span class="order-emoji">🥕</span>
+                        <div class="order-text">
+                            <span class="order-status">Dalam Pengiriman</span>
+                            <span class="order-meta">07 Feb, 18 : 22 • 5 Produk</span>
+                        </div>
+                    </div>
+                    <span class="chevron">›</span>
+                </li>
+
+                <!-- repeat / loop as needed -->
+            </ul>
+        </section>
+
+
+
+        <!-- =================  PROFILE  ================= -->
+        <section class="screen" id="profile-screen">
+            <header class="row between">
+                <h2 style="font-size:18px">👤 Profil</h2><button class="chat-btn" onclick="show('home')">←
+                    Beranda</button>
+            </header>
+            <div class="profile-box">
+                <div class="avatar">👩‍🍳</div>
+                <h3>Mba Nana</h3>
+                <p>Pedagang Sayur • Jakarta Timur</p>
+                <button onclick="alert('Fitur segera hadir ✨')">Edit Profil</button>
+            </div>
+        </section>
+
+        <!-- Floating Cart -->
+        <div class="fab" onclick="show('cart')"><svg viewBox="0 0 24 24">
+                <path
+                    d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A.25.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z" />
+            </svg>
+            <div class="badge" id="cart-badge">0</div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav>
+            <div class="nav-items">
+                <a href="#" class="nav-item active" data-screen="home"><svg viewBox="0 0 24 24">
+                        <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
+                    </svg><span>Beranda</span></a>
+                <a href="#" class="nav-item" data-screen="cart"><svg viewBox="0 0 24 24">
+                        <path
+                            d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A.25.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z" />
+                    </svg><span>Keranjang</span></a>
+                <a href="#" class="nav-item" data-screen="history">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 3h18v2H3V3m0 4h18v2H3V7m0 4h12v2H3v-2m0 4h12v2H3v-2z" />
+                    </svg>
+                    <span>Transaksi</span>
+                </a>
+                <a href="#" class="nav-item" data-screen="profile"><svg viewBox="0 0 24 24">
+                        <path
+                            d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
+                    </svg><span>Profil</span></a>
+            </div>
+        </nav>
+
+    </div>
+
+    <!-- ==========  DATA & LOGIC  ========== -->
+    <script>
+        // Dummy data
+        const categories = [
+            { emoji: '🥬', name: 'Sayuran Segar', desc: 'Kangkung, bayam' },
+            { emoji: '🍎', name: 'Buah-buahan', desc: 'Apel, jeruk' },
+            { emoji: '🌶️', name: 'Bumbu Dapur', desc: 'Cabai, bawang' },
+            { emoji: '🥕', name: 'Sayur Akar', desc: 'Wortel, ubi' }
+        ];
+        const products = [
+            { emoji: '🥬', name: 'Kangkung Segar', price: 3500, unit: '/ikat' },
+            { emoji: '🍅', name: 'Tomat Merah', price: 8000, unit: '/kg' },
+            { emoji: '🥕', name: 'Wortel Organik', price: 12000, unit: '/kg' },
+            { emoji: '🌶️', name: 'Cabai Merah', price: 45000, unit: '/kg' },
+            { emoji: '🧄', name: 'Bawang Putih', price: 35000, unit: '/kg' },
+            { emoji: '🥒', name: 'Timun Segar', price: 6000, unit: '/kg' }
+        ];
+
+        // Populate category & product grid
+        const catGrid = document.getElementById('cat-grid');
+        categories.forEach(c => catGrid.innerHTML += `<div class="card"><div class="category-icon">${c.emoji}</div><h4>${c.name}</h4><p>${c.desc}</p></div>`);
+        const prodGrid = document.getElementById('product-grid');
+        products.forEach((p, i) => prodGrid.innerHTML += `
+      <div class="card"><div class="product-img"><div class="quality"></div><div class="fresh">SEGAR</div><div style="font-size:38px">${p.emoji}</div></div>
+        <div class="product-info"><h4>${p.name}</h4><div class="product-price">Rp${p.price.toLocaleString()}</div><p style="font-size:11px;color:#7f8c8d">${p.unit}</p>
+          <button class="btn-add" data-id="${i}">+ Keranjang</button></div></div>`);
+
+        // State
+        let cart = [];
+        const badge = document.getElementById('cart-badge');
+
+        // Add to cart
+        document.addEventListener('click', e => {
+            if (e.target.matches('.btn-add')) {
+                const id = +e.target.dataset.id;
+                const found = cart.find(it => it.id === id);
+                found ? found.qty++ : cart.push({ id, qty: 1 });
+                updateBadge();
+                e.target.textContent = '✓ Ditambahkan';
+                setTimeout(() => e.target.textContent = '+ Keranjang', 900);
+            }
+        });
+
+        function updateBadge() { badge.textContent = cart.reduce((t, i) => t + i.qty, 0) }
+
+        // Navigation handler
+        document.querySelectorAll('.nav-item').forEach(link => link.onclick = function (ev) { ev.preventDefault(); show(this.dataset.screen) });
+
+        function show(screen) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            if (screen === 'home') document.getElementById('home-screen').classList.add('active');
+            if (screen === 'cart') renderCart();
+            if (screen === 'profile') document.getElementById('profile-screen').classList.add('active');
+            // active nav highlight
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.screen === screen));
+        }
+
+        function showScreen(name) {
+            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+            document.getElementById(name + '-screen').style.display = 'block';
+        }
+
+        /* called from each order card */
+        function openOrderDetail(orderId) {
+            alert('Open detail for order #' + orderId);
+            // navigate or build a detail screen here
+        }
+
+
+        // ————————————————————————————————————————————————
+        // PROFILE: load from localStorage + render on screen
+        // ————————————————————————————————————————————————
+        function loadProfile() {
+            const stored = localStorage.getItem('mpoknana_profile');
+            if (!stored) return null;
+            try {
+                return JSON.parse(stored);
+            } catch {
+                return null;
+            }
+        }
+
+        function renderProfile() {
+            const prof = loadProfile();
+            if (!prof) return;
+            document.querySelector('#profile-screen h3').textContent = prof.name;
+            document.querySelector('#profile-screen p').textContent =
+                prof.phone + ' • ' + prof.division;
+        }
+
+        // ————————————————————————————————————————————————
+        // PROFILE: prompt user to edit + save to localStorage
+        // ————————————————————————————————————————————————
+        function editProfile() {
+            const current = loadProfile() || { name: '', phone: '', division: '' };
+            const name = prompt('Nama lengkap:', current.name) || current.name;
+            const phone = prompt('Nomor telepon:', current.phone) || current.phone;
+            const division = prompt('Divisi kantor:', current.division) || current.division;
+            const prof = { name, phone, division };
+            localStorage.setItem('mpoknana_profile', JSON.stringify(prof));
+            renderProfile();
+        }
+
+        // wire up your existing “Edit Profil” button:
+        document.querySelector('#profile-screen button').onclick = editProfile;
+
+        // render on page‑load
+        renderProfile();
+
+
+        // Render cart
+        function renderCart() {
+            const wrap = document.getElementById('cart-items');
+            wrap.innerHTML = '';
+            if (cart.length === 0) { wrap.innerHTML = '<p style="text-align:center;padding:40px">Keranjang masih kosong 🛒</p>'; document.getElementById('pay-btn').disabled = true } else {
+                document.getElementById('pay-btn').disabled = false;
+                cart.forEach((row, idx) => {
+                    const p = products[row.id];
+                    wrap.innerHTML += `<div class="cart-item"><span>${p.name}</span><div class="qty"><button onclick="chg(${idx},-1)">−</button><span>${row.qty}</span><button onclick="chg(${idx},1)">+</button></div><span>Rp${(p.price * row.qty).toLocaleString()}</span></div>`;
+                });
+            }
+            document.getElementById('subtotal').textContent = 'Rp' + subtotal().toLocaleString();
+            document.getElementById('cart-screen').classList.add('active');
+        }
+        function subtotal() { return cart.reduce((s, c) => s + products[c.id].price * c.qty, 0) }
+        function chg(idx, delta) { cart[idx].qty += delta; if (cart[idx].qty <= 0) cart.splice(idx, 1); updateBadge(); renderCart() }
+
+        // Checkout
+        async function pay() {
+            if (cart.length === 0) return;
+            const profile = loadProfile();
+            if (!profile) {
+                alert('Silakan isi profil Anda terlebih dahulu!');
+                show('profile');
+                return;
+            }
+
+            const payload = {
+                profile,
+                items: cart.map(c => ({
+                    emoji: products[c.id].emoji,
+                    name: products[c.id].name,
+                    unit_price: products[c.id].price,
+                    qty: c.qty,
+                    subtotal: products[c.id].price * c.qty
+                })),
+                total: subtotal(),
+                timestamp: new Date().toISOString()
+            };
+
+            // disable button to prevent double‑submit
+            const btn = document.getElementById('pay-btn');
+            btn.disabled = true;
+            btn.textContent = 'Sedang memproses…';
+
+            try {
+                const res = await fetch(
+                    'https://license.dtskul-ai.ghanemtech.co.id/n8n/webhook-test/05b2cb68-0883-4f09-9b71-4a1d9bd0cdf3',
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    }
+                );
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                // success!
+                alert('Terima kasih—pesanan Anda sudah terkirim!');
+                cart = [];
+                updateBadge();
+                show('home');
+            } catch (err) {
+                console.error(err);
+                alert('Gagal mengirim pesanan. Silakan coba lagi.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Bayar Sekarang';
+            }
+        }
+
+        // Live search
+        document.getElementById('search').addEventListener('input', e => {
+            const term = e.target.value.toLowerCase();
+            prodGrid.querySelectorAll('.card').forEach(card => {
+                const name = card.querySelector('.product-info h4').textContent.toLowerCase();
+                card.style.display = name.includes(term) ? 'block' : 'none';
+            });
+        });
+
+        updateBadge(); // init
+    </script>
+</body>
+
+</html>
