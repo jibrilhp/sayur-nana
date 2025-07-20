@@ -18,13 +18,18 @@
         }
 
         :root {
-            --pri: #1e90ff;
-            /* biru utama */
-            --pri-dark: #1e3c72;
+            --pri: #F4B2C7;
+            /* Changed to soft pink from QR code */
+            --pri-dark: #E89BB5;
+            /* Darker pink shade */
             --sec: #4caf50;
-            /* hijau segar */
+            /* Keep green for contrast */
             --warn: #e74c3c;
-            /* merah harga */
+            /* Keep red for warnings */
+            --pink-light: #F8E1EA;
+            /* Very light pink for backgrounds */
+            --mint-bg: #E8F4F0;
+            /* Mint green background like QR code */
             --radius: 14px;
             --shadow: 0 3px 12px rgba(0, 0, 0, .12);
         }
@@ -36,15 +41,14 @@
 
         body {
             font: 14px/1.4 "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #87ceeb 0%, #98fb98 50%, #f0f8ff 100%);
+            background: var(--mint-bg);
+            /* Changed to mint green */
             color: #333;
             display: flex;
             justify-content: center;
             align-items: stretch;
             overflow-y: auto;
-            /* <-- NEW */
             overscroll-behavior: none;
-            /* optional but nice on mobile */
         }
 
         /* MOBILE FRAME */
@@ -72,13 +76,13 @@
 
         /* STICKY HEADER (shared) */
         header {
-            background: linear-gradient(135deg, var(--pri-dark) 0%, #2a5298 100%);
+            background: linear-gradient(135deg, var(--pri-dark) 0%, var(--pri) 100%);
             color: #fff;
             padding: 18px 14px;
             position: sticky;
             top: 0;
             z-index: 20;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .1)
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
         }
 
         .row {
@@ -139,7 +143,7 @@
 
         /* PROMO BANNER */
         .promo {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            background: linear-gradient(135deg, var(--pri) 0%, var(--pri-dark) 100%);
             margin: 16px;
             border-radius: var(--radius);
             padding: 20px;
@@ -147,7 +151,8 @@
             color: #fff;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(255, 107, 107, .3)
+            box-shadow: 0 5px 15px rgba(244, 178, 199, .3);
+            /* Pink shadow */
         }
 
         .promo-title {
@@ -179,9 +184,10 @@
             padding: 14px;
             text-align: center;
             box-shadow: var(--shadow);
-            border: 1px solid rgba(30, 144, 255, .08);
+            border: 1px solid var(--pink-light);
+            /* Light pink border */
             cursor: pointer;
-            transition: .25s
+            transition: .25s;
         }
 
         .card:hover {
@@ -271,15 +277,18 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--pri-dark) 0%, #2a5298 100%);
+            background: linear-gradient(135deg, var(--pri-dark) 0%, var(--pri) 100%);
+            /* Pink gradient */
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 5px 15px rgba(30, 60, 114, .45);
+            box-shadow: 0 5px 15px rgba(244, 178, 199, .45);
+            /* Pink shadow */
             cursor: pointer;
             z-index: 30;
-            transition: .25s
+            transition: .25s;
         }
+
 
         .fab:hover {
             transform: scale(1.08)
@@ -375,10 +384,11 @@
             border: none;
             border-radius: 50%;
             background: var(--pri);
+            /* Pink quantity buttons */
             color: #fff;
             font-size: 16px;
             cursor: pointer;
-            line-height: 0
+            line-height: 0;
         }
 
         .subtotal {
@@ -393,10 +403,11 @@
             border: none;
             border-radius: var(--radius);
             background: var(--pri-dark);
+            /* Pink checkout button */
             color: #fff;
             font-size: 14px;
             font-weight: 600;
-            cursor: pointer
+            cursor: pointer;
         }
 
         /* every screen already inherits this – repeat only if missing */
@@ -506,14 +517,15 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, var(--pri-dark) 0%, var(--pri) 100%);
+            /* Pink avatar */
             display: flex;
             justify-content: center;
             align-items: center;
             color: #fff;
             font-size: 32px;
             margin: 0 auto 12px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, .15)
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .15);
         }
 
         .profile-box h3 {
@@ -532,9 +544,10 @@
             border: none;
             border-radius: 20px;
             background: var(--pri);
+            /* Pink profile button */
             color: #fff;
             font-size: 13px;
-            cursor: pointer
+            cursor: pointer;
         }
     </style>
 </head>
@@ -559,7 +572,7 @@
 
             <!-- Banner -->
             <section class="promo">
-                <div class="promo-title">🍞Preorder yuk</div>
+                <div class="promo-title">🍞Preorder yuk!</div>
                 <div class="promo-sub">Pesan sekarang diantar besok*</div>
             </section>
 
@@ -679,7 +692,7 @@
         // Dummy data
         const categories = [
             { emoji: '🍞', name: 'Roti', desc: 'Berbagai macam roti' },
-            { emoji: '🍟', name: 'Snack', desc: 'Keripik singkong' },
+            { emoji: '🍟', name: 'Snack', desc: 'Keripik singkong, Makaroni' },
         ];
         const products = [
             { emoji: '🍞', name: 'Roti Boy Kosong', price: 7500, unit: '/pcs', category: 'Roti' },
@@ -713,7 +726,7 @@
             // your two new keripik variants:
             { emoji: '🌶️🍯', name: 'Keripik Barbeque', price: 7500, unit: '/pcs', category: 'Snack' },
             { emoji: '🌶️🌶️', name: 'Keripik Balado', price: 7500, unit: '/pcs', category: 'Snack' },
-            { emoji: '🧂', name: 'Keripik Makaroni Goreng', price: 7500, unit: '/pcs', category: 'Snack' },
+            { emoji: '🧂', name: 'Makaroni Goreng', price: 7500, unit: '/pcs', category: 'Snack' },
             { emoji: '🧂🍯', name: 'Keripik Asin Manis', price: 7500, unit: '/pcs', category: 'Snack' },
         ];
 
@@ -840,8 +853,8 @@
         function renderCart() {
             const wrap = document.getElementById('cart-items');
             wrap.innerHTML = '';
-            if (cart.length === 0) { wrap.innerHTML = '<p style="text-align:center;padding:40px">Keranjang masih kosong 🛒</p>'; document.getElementById('pay-btn').disabled = true } else {
-                document.getElementById('pay-btn').disabled = false;
+            if (cart.length === 0) { wrap.innerHTML = '<p style="text-align:center;padding:40px">Keranjang masih kosong 🛒</p>'; document.getElementById('pay-btn').hidden = true } else {
+                document.getElementById('pay-btn').hidden = false;
                 cart.forEach((row, idx) => {
                     const p = products[row.id];
                     wrap.innerHTML += `<div class="cart-item"><span>${p.name}</span><div class="qty"><button onclick="chg(${idx},-1)">−</button><span>${row.qty}</span><button onclick="chg(${idx},1)">+</button></div><span>Rp${(p.price * row.qty).toLocaleString()}</span></div>`;
