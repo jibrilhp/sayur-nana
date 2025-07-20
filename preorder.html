@@ -549,7 +549,7 @@
                     <div class="row" style="gap:6px;font-size:12px">📍<div><strong>Toko Mba Nana</strong><span
                                 style="display:block;font-size:10px;opacity:.8">BRI 1 DGV, Lt.4 </span></div>
                     </div>
-                    <a href="https://wa.me/628213820940" class="chat-btn">💬 Chat CS</a>
+                    <a href="https://wa.me/6282138209401" class="chat-btn">💬 Chat CS</a>
                 </div>
                 <div class="search"><svg viewBox="0 0 24 24">
                         <path
@@ -559,7 +559,7 @@
 
             <!-- Banner -->
             <section class="promo">
-                <div class="promo-title">Preorder yuk</div>
+                <div class="promo-title">🍞Preorder yuk</div>
                 <div class="promo-sub">Pesan sekarang diantar besok*</div>
             </section>
 
@@ -679,7 +679,7 @@
         // Dummy data
         const categories = [
             { emoji: '🍞', name: 'Roti', desc: 'Berbagai macam roti' },
-            { emoji: '🍟', name: 'Snack', desc: 'Kripik OkOK' },
+            { emoji: '🍟', name: 'Snack', desc: 'Keripik singkong' },
         ];
         const products = [
             { emoji: '🍞', name: 'Roti Boy Kosong', price: 7500, unit: '/pcs', category: 'Roti' },
@@ -711,7 +711,9 @@
             { emoji: '🥥', name: 'Roti Kelapa', price: 7500, unit: '/pcs', category: 'Roti' },
 
             // your two new keripik variants:
-            { emoji: '🌶️🍯', name: 'Keripik Pedas Manis', price: 7500, unit: '/pcs', category: 'Snack' },
+            { emoji: '🌶️🍯', name: 'Keripik Barbeque', price: 7500, unit: '/pcs', category: 'Snack' },
+            { emoji: '🌶️🌶️', name: 'Keripik Balado', price: 7500, unit: '/pcs', category: 'Snack' },
+            { emoji: '🧂', name: 'Keripik Makaroni Goreng', price: 7500, unit: '/pcs', category: 'Snack' },
             { emoji: '🧂🍯', name: 'Keripik Asin Manis', price: 7500, unit: '/pcs', category: 'Snack' },
         ];
 
@@ -800,7 +802,7 @@
             list.forEach((p, i) => {
                 prodGrid.innerHTML += `
       <div class="card">
-        <div class="product-img">…<div style="font-size:38px">${p.emoji}</div></div>
+        <div class="product-img"><div style="font-size:38px">${p.emoji}</div></div>
         <div class="product-info">
           <h4>${p.name}</h4>
           <div class="product-price">Rp${p.price.toLocaleString()}</div>
