@@ -1,11 +1,11 @@
-<!--  Toko Mpok Nana – Single‑page mobile shop (home ▸ kategori ▸ cart ▸ profile)  -->
+<!--  Toko Mbak Nana – Single‑page mobile shop (home ▸ kategori ▸ cart ▸ profile)  -->
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Toko Mpok Nana – Preorder</title>
+    <title>Toko Mbak Nana – Preorder</title>
 
     <!-- ==========  DESIGN TOKENS & RESET  ========== -->
     <style>
@@ -546,7 +546,7 @@
         <section class="screen active" id="home-screen">
             <header>
                 <div class="row between">
-                    <div class="row" style="gap:6px;font-size:12px">📍<div><strong>Toko Mpok Nana</strong><span
+                    <div class="row" style="gap:6px;font-size:12px">📍<div><strong>Toko Mbak Nana</strong><span
                                 style="display:block;font-size:10px;opacity:.8">BRI 1 DGV, Lt.4 </span></div>
                     </div>
                     <button class="chat-btn">💬 Chat CS</button>
@@ -554,7 +554,7 @@
                 <div class="search"><svg viewBox="0 0 24 24">
                         <path
                             d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28h.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                    </svg><input id="search" type="text" placeholder="Cari sayur, buah, bumbu…"></div>
+                    </svg><input id="search" type="text" placeholder="Cari Roti, Keripik…"></div>
             </header>
 
             <!-- Banner -->
@@ -635,8 +635,8 @@
             </header>
             <div class="profile-box">
                 <div class="avatar">👩‍🍳</div>
-                <h3>Mba Nana</h3>
-                <p>Pedagang Sayur • Jakarta Timur</p>
+                <h3>Mbak Nana</h3>
+                <p>Product Manager BRI IT</p>
                 <button onclick="editProfile()">Edit Profil</button>
             </div>
         </section>
@@ -770,7 +770,7 @@
         // PROFILE: load from localStorage + render on screen
         // ————————————————————————————————————————————————
         function loadProfile() {
-            const stored = localStorage.getItem('mpoknana_profile');
+            const stored = localStorage.getItem('Mbaknana_profile');
             if (!stored) return null;
             try {
                 return JSON.parse(stored);
@@ -796,7 +796,7 @@
             const phone = prompt('Nomor telepon:', current.phone) || current.phone;
             const division = prompt('Divisi kantor:', current.division) || current.division;
             const prof = { name, phone, division };
-            localStorage.setItem('mpoknana_profile', JSON.stringify(prof));
+            localStorage.setItem('Mbaknana_profile', JSON.stringify(prof));
             renderProfile();
         }
 
