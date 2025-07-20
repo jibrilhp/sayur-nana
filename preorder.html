@@ -855,7 +855,10 @@
 
         // Checkout
         async function pay() {
-            if (cart.length === 0) return;
+            if (cart.length === 0) {
+                alert('Keranjang masih kosong! Silakan tambahkan produk terlebih dahulu.');
+                show('home');
+            }
             const profile = loadProfile();
             if (!profile) {
                 alert('Silakan isi profil Anda terlebih dahulu!');
