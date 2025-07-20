@@ -858,6 +858,7 @@
             if (cart.length === 0) {
                 alert('Keranjang masih kosong! Silakan tambahkan produk terlebih dahulu.');
                 show('home');
+                return;
             }
             const profile = loadProfile();
             if (!profile) {
