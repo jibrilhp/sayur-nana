@@ -1,11 +1,11 @@
-<!--  Toko Mbak Nana – Single‑page mobile shop (home ▸ kategori ▸ cart ▸ profile)  -->
+<!--  Toko Mba Nana – Single‑page mobile shop (home ▸ kategori ▸ cart ▸ profile)  -->
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Toko Mbak Nana – Preorder</title>
+    <title>Toko Mba Nana – Preorder</title>
 
     <!-- ==========  DESIGN TOKENS & RESET  ========== -->
     <style>
@@ -546,10 +546,10 @@
         <section class="screen active" id="home-screen">
             <header>
                 <div class="row between">
-                    <div class="row" style="gap:6px;font-size:12px">📍<div><strong>Toko Mbak Nana</strong><span
+                    <div class="row" style="gap:6px;font-size:12px">📍<div><strong>Toko Mba Nana</strong><span
                                 style="display:block;font-size:10px;opacity:.8">BRI 1 DGV, Lt.4 </span></div>
                     </div>
-                    <button class="chat-btn">💬 Chat CS</button>
+                    <a href="https://wa.me/628213820940" class="chat-btn">💬 Chat CS</a>
                 </div>
                 <div class="search"><svg viewBox="0 0 24 24">
                         <path
@@ -559,8 +559,8 @@
 
             <!-- Banner -->
             <section class="promo">
-                <div class="promo-title">🥬 Preorder yuk</div>
-                <div class="promo-sub">Langsung dikirim besok*</div>
+                <div class="promo-title">Preorder yuk</div>
+                <div class="promo-sub">Pesan sekarang diantar besok*</div>
             </section>
 
             <!-- Kategori -->
@@ -581,7 +581,7 @@
             <div class="cart-content">
                 <div id="cart-items"></div>
                 <div class="subtotal">Subtotal: <span id="subtotal">Rp0</span></div>
-                <button class="btn-checkout" onclick="pay()" id="pay-btn">Bayar Sekarang</button>
+                <button class="btn-checkout" onclick="pay()" id="pay-btn">Belanja Sekarang</button>
             </div>
         </section>
 
@@ -635,7 +635,7 @@
             </header>
             <div class="profile-box">
                 <div class="avatar">👩‍🍳</div>
-                <h3>Mbak Nana</h3>
+                <h3>Mba Nana</h3>
                 <p>Product Manager BRI IT</p>
                 <button onclick="editProfile()">Edit Profil</button>
             </div>
@@ -682,47 +682,55 @@
             { emoji: '🍟', name: 'Snack', desc: 'Kripik OkOK' },
         ];
         const products = [
-            { emoji: '🍞', name: 'Roti Boy Kosong', price: 7500, unit: '/pcs' },
-            { emoji: '🫐', name: 'Roti Blueberry', price: 7500, unit: '/pcs' },
-            { emoji: '🍩☕', name: 'Roti Donat Tiramisu', price: 7500, unit: '/pcs' },
-            { emoji: '🍌🍫🧀', name: 'Roti Pisang Coklat Keju', price: 7500, unit: '/pcs' },
-            { emoji: '🧀', name: 'Roti Boy Keju', price: 7500, unit: '/pcs' },
-            { emoji: '🍩✨', name: 'Roti Donat Mesis', price: 7500, unit: '/pcs' },
-            { emoji: '🌶️🥓', name: 'Roti Abon Gulung Spicy', price: 7500, unit: '/pcs' },
-            { emoji: '🥨', name: 'Roti Sisir', price: 7500, unit: '/pcs' },
-            { emoji: '🍩🥓', name: 'Roti Donat Abon', price: 7500, unit: '/pcs' },
-            { emoji: '🍩🌈', name: 'Roti Donat Pelangi', price: 7500, unit: '/pcs' },
-            { emoji: '🍫', name: 'Roti Boy Coklat', price: 7500, unit: '/pcs' },
-            { emoji: '🧈', name: 'Roti Boy Butter', price: 7500, unit: '/pcs' },
-            { emoji: '🍩🧀', name: 'Roti Donat Keju', price: 7500, unit: '/pcs' },
-            { emoji: '🍓🍩', name: 'Roti Strawberry Donat', price: 7500, unit: '/pcs' },
-            { emoji: '🍌🍫', name: 'Roti Pisang Coklat', price: 7500, unit: '/pcs' },
-            { emoji: '🍫🧀', name: 'Roti Coklat Keju', price: 7500, unit: '/pcs' },
-            { emoji: '🧈🧀', name: 'Roti Butter Cheese', price: 7500, unit: '/pcs' },
-            { emoji: '🍩🍫', name: 'Roti Donat Coklat', price: 7500, unit: '/pcs' },
-            { emoji: '🍗', name: 'Roti Ayam', price: 7500, unit: '/pcs' },
-            { emoji: '🥥', name: 'Roti Srikaya', price: 7500, unit: '/pcs' },
-            { emoji: '🍍', name: 'Roti Nanas', price: 7500, unit: '/pcs' },
-            { emoji: '☕', name: 'Roti Moka', price: 7500, unit: '/pcs' },
-            { emoji: '🍩🍪', name: 'Roti Donat Oreo', price: 7500, unit: '/pcs' },
-            { emoji: '🍩🥜', name: 'Roti Donat Kacang', price: 7500, unit: '/pcs' },
-            { emoji: '🌭', name: 'Roti Sosis', price: 7500, unit: '/pcs' },
-            { emoji: '🍕', name: 'Roti Pizza', price: 7500, unit: '/pcs' },
-            { emoji: '🥥', name: 'Roti Kelapa', price: 7500, unit: '/pcs' },
+            { emoji: '🍞', name: 'Roti Boy Kosong', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🫐', name: 'Roti Blueberry', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍩☕', name: 'Roti Donat Tiramisu', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍌🍫🧀', name: 'Roti Pisang Coklat Keju', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🧀', name: 'Roti Boy Keju', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍩✨', name: 'Roti Donat Mesis', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🌶️🥓', name: 'Roti Abon Gulung Spicy', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🥨', name: 'Roti Sisir', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍩🥓', name: 'Roti Donat Abon', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍩🌈', name: 'Roti Donat Pelangi', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍫', name: 'Roti Boy Coklat', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🧈', name: 'Roti Boy Butter', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍩🧀', name: 'Roti Donat Keju', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍓🍩', name: 'Roti Strawberry Donat', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍌🍫', name: 'Roti Pisang Coklat', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍫🧀', name: 'Roti Coklat Keju', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🧈🧀', name: 'Roti Butter Cheese', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍩🍫', name: 'Roti Donat Coklat', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍗', name: 'Roti Ayam', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🥥', name: 'Roti Srikaya', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍍', name: 'Roti Nanas', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '☕', name: 'Roti Moka', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍩🍪', name: 'Roti Donat Oreo', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍩🥜', name: 'Roti Donat Kacang', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🌭', name: 'Roti Sosis', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🍕', name: 'Roti Pizza', price: 7500, unit: '/pcs', category: 'Roti' },
+            { emoji: '🥥', name: 'Roti Kelapa', price: 7500, unit: '/pcs', category: 'Roti' },
 
             // your two new keripik variants:
-            { emoji: '🌶️🍯', name: 'Keripik Pedas Manis', price: 7500, unit: '/pcs' },
-            { emoji: '🧂🍯', name: 'Keripik Asin Manis', price: 7500, unit: '/pcs' },
+            { emoji: '🌶️🍯', name: 'Keripik Pedas Manis', price: 7500, unit: '/pcs', category: 'Snack' },
+            { emoji: '🧂🍯', name: 'Keripik Asin Manis', price: 7500, unit: '/pcs', category: 'Snack' },
         ];
 
         // Populate category & product grid
         const catGrid = document.getElementById('cat-grid');
+        catGrid.addEventListener('click', e => {
+            const card = e.target.closest('.card');
+            if (!card) return;
+            const catName = card.querySelector('h4').textContent;
+            const filtered = products.filter(p => p.category === catName);
+            renderProducts(filtered);
+        });
         categories.forEach(c => catGrid.innerHTML += `<div class="card"><div class="category-icon">${c.emoji}</div><h4>${c.name}</h4><p>${c.desc}</p></div>`);
         const prodGrid = document.getElementById('product-grid');
-        products.forEach((p, i) => prodGrid.innerHTML += `
-      <div class="card"><div class="product-img"><div class="quality"></div><div class="fresh">SEGAR</div><div style="font-size:38px">${p.emoji}</div></div>
-        <div class="product-info"><h4>${p.name}</h4><div class="product-price">Rp${p.price.toLocaleString()}</div><p style="font-size:11px;color:#7f8c8d">${p.unit}</p>
-          <button class="btn-add" data-id="${i}">+ Keranjang</button></div></div>`);
+        renderProducts(products);
+        //     products.forEach((p, i) => prodGrid.innerHTML += `
+        //   <div class="card"><div class="product-img"><div class="quality"></div><div class="fresh">SEGAR</div><div style="font-size:38px">${p.emoji}</div></div>
+        //     <div class="product-info"><h4>${p.name}</h4><div class="product-price">Rp${p.price.toLocaleString()}</div><p style="font-size:11px;color:#7f8c8d">${p.unit}</p>
+        //       <button class="btn-add" data-id="${i}">+ Keranjang</button></div></div>`);
 
         // State
         let cart = [];
@@ -770,7 +778,7 @@
         // PROFILE: load from localStorage + render on screen
         // ————————————————————————————————————————————————
         function loadProfile() {
-            const stored = localStorage.getItem('Mbaknana_profile');
+            const stored = localStorage.getItem('Mbanana_profile');
             if (!stored) return null;
             try {
                 return JSON.parse(stored);
@@ -787,6 +795,25 @@
                 prof.phone + ' • ' + prof.division;
         }
 
+        function renderProducts(list) {
+            prodGrid.innerHTML = '';
+            list.forEach((p, i) => {
+                prodGrid.innerHTML += `
+      <div class="card">
+        <div class="product-img">…<div style="font-size:38px">${p.emoji}</div></div>
+        <div class="product-info">
+          <h4>${p.name}</h4>
+          <div class="product-price">Rp${p.price.toLocaleString()}</div>
+          <p style="font-size:11px;color:#7f8c8d">${p.unit}</p>
+          <button class="btn-add" data-id="${i}">+ Keranjang</button>
+        </div>
+      </div>`;
+            });
+        }
+
+
+
+
         // ————————————————————————————————————————————————
         // PROFILE: prompt user to edit + save to localStorage
         // ————————————————————————————————————————————————
@@ -796,7 +823,7 @@
             const phone = prompt('Nomor telepon:', current.phone) || current.phone;
             const division = prompt('Divisi kantor:', current.division) || current.division;
             const prof = { name, phone, division };
-            localStorage.setItem('Mbaknana_profile', JSON.stringify(prof));
+            localStorage.setItem('Mbanana_profile', JSON.stringify(prof));
             renderProfile();
         }
 
