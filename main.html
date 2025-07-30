@@ -545,21 +545,18 @@
         <section class="screen active" id="home-screen">
             <header>
                 <div class="row between">
-                    <div class="row" style="gap:6px;font-size:12px">📍<div><strong>Sayur Mba Nana</strong><span
-                                style="display:block;font-size:10px;opacity:.8">Jl. Raya Bogor 88</span></div>
+                    <div class="row" style="gap:6px;font-size:12px">📍<div><strong>Toko Mba Nana</strong><span
+                                style="display:block;font-size:10px;opacity:.8">Kebagusan City Apartement</span></div>
                     </div>
-                    <button class="chat-btn">💬 Chat CS</button>
+                    <a target="_blank" href="https://wa.me/628152222731" class="chat-btn">💬 Chat CS</a>
                 </div>
-                <div class="search"><svg viewBox="0 0 24 24">
-                        <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28h.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                    </svg><input id="search" type="text" placeholder="Cari sayur, buah, bumbu…"></div>
+
             </header>
 
             <!-- Banner -->
             <section class="promo">
                 <div class="promo-title">🥬 SAYUR SEGAR HARI INI</div>
-                <div class="promo-sub">Diskon 30% untuk semua sayur!</div>
+                <div class="promo-sub">Free Ongkir!</div>
             </section>
 
             <!-- Kategori -->
@@ -568,6 +565,10 @@
 
             <!-- Terlaris -->
             <h3 style="margin:22px 16px 10px;font-size:18px;font-weight:700;color:#2c3e50">Produk Terlaris</h3>
+            <div class="search"><svg viewBox="0 0 24 24">
+                    <path
+                        d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28h.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                </svg><input id="search" type="text" placeholder="Cari sayur, buah, bumbu…"></div>
             <div class="grid grid-2" id="product-grid"></div>
         </section>
 
@@ -675,20 +676,112 @@
 
     <!-- ==========  DATA & LOGIC  ========== -->
     <script>
-        // Dummy data
+        const SHIPPING_PACKAGE_SIZE = 30;
+        const SHIPPING_COST = 1500;  // per package of up to 30 items
+        const MARGIN = 2500;          // per transaction
+
         const categories = [
-            { emoji: '🥬', name: 'Sayuran Segar', desc: 'Kangkung, bayam' },
-            { emoji: '🍎', name: 'Buah-buahan', desc: 'Apel, jeruk' },
-            { emoji: '🌶️', name: 'Bumbu Dapur', desc: 'Cabai, bawang' },
-            { emoji: '🥕', name: 'Sayur Akar', desc: 'Wortel, ubi' }
+            { id: 'all', emoji: '✅', name: 'Semua', desc: 'Semua kategori' },
+            { id: 'sayuran', emoji: '🥬', name: 'Sayuran Segar', desc: 'Kangkung, bayam, dll' },
+            { id: 'buah', emoji: '🍎', name: 'Buah-buahan', desc: 'Apel, jeruk, dll' },
+            { id: 'bumbu', emoji: '🌶️', name: 'Bumbu Dapur', desc: 'Cabai, bawang, dll' },
+            { id: 'lainnya', emoji: '🥕', name: 'Lainnya', desc: 'Produk lainnya' }
         ];
         const products = [
-            { emoji: '🥬', name: 'Kangkung Segar', price: 3500, unit: '/ikat' },
-            { emoji: '🍅', name: 'Tomat Merah', price: 8000, unit: '/kg' },
-            { emoji: '🥕', name: 'Wortel Organik', price: 12000, unit: '/kg' },
-            { emoji: '🌶️', name: 'Cabai Merah', price: 45000, unit: '/kg' },
-            { emoji: '🧄', name: 'Bawang Putih', price: 35000, unit: '/kg' },
-            { emoji: '🥒', name: 'Timun Segar', price: 6000, unit: '/kg' }
+            // Rp 6,000 range
+            { id: 1, name: 'Bawang Campur', price: 8500, unit: '/kg', category: 'bumbu', emoji: '🧅' },
+            { id: 2, name: 'Bawang Merah', price: 8500, unit: '/kg', category: 'bumbu', emoji: '🧅' },
+            { id: 3, name: 'Bawang Putih', price: 8500, unit: '/kg', category: 'bumbu', emoji: '🧄' },
+            { id: 4, name: 'Cabe Campur', price: 8500, unit: '/kg', category: 'bumbu', emoji: '🌶️' },
+            { id: 5, name: 'Cabe Rawit', price: 8500, unit: '/kg', category: 'bumbu', emoji: '🌶️' },
+            { id: 6, name: 'Cabe Merah Kriting', price: 8500, unit: '/kg', category: 'bumbu', emoji: '🌶️' },
+
+            // Rp 7,000 range  
+            { id: 7, name: 'Sambal Terasi', price: 9500, unit: '/porsi', category: 'bumbu', emoji: '🥄' },
+            { id: 8, name: 'Sambal Limau', price: 9500, unit: '/porsi', category: 'bumbu', emoji: '🥄' },
+            { id: 9, name: 'Sambal Bawang', price: 9500, unit: '/porsi', category: 'bumbu', emoji: '🥄' },
+            { id: 10, name: 'Sambal Kemang', price: 9500, unit: '/porsi', category: 'bumbu', emoji: '🥄' },
+            { id: 11, name: 'Sambal Hijau', price: 9500, unit: '/porsi', category: 'bumbu', emoji: '🥄' },
+            { id: 12, name: 'Sambal Pecak', price: 9500, unit: '/porsi', category: 'bumbu', emoji: '🥄' },
+
+            // Rp 8,000 range
+            { id: 13, name: 'Teri Jengki', price: 10500, unit: '/kg', category: 'lainnya', emoji: '🐟' },
+            { id: 14, name: 'Japu', price: 10500, unit: '/kg', category: 'lainnya', emoji: '🐟' },
+            { id: 15, name: 'Ikan Asin Dendeng', price: 10500, unit: '/kg', category: 'lainnya', emoji: '🐟' },
+            { id: 16, name: 'Bulu Ayam', price: 10500, unit: '/kg', category: 'lainnya', emoji: '🐔' },
+            { id: 17, name: 'Udang Rebon', price: 10500, unit: '/kg', category: 'lainnya', emoji: '🦐' },
+
+            // Rp 10,000 range
+            { id: 18, name: 'Bening Bayam', price: 12500, unit: '/porsi', category: 'sayuran', emoji: '🥬' },
+            { id: 19, name: 'Bening Daun Kantuk', price: 12500, unit: '/porsi', category: 'sayuran', emoji: '🥬' },
+            { id: 20, name: 'Sayur Asem', price: 12500, unit: '/porsi', category: 'sayuran', emoji: '🥗' },
+            { id: 21, name: 'Bakwan Sayur', price: 12500, unit: '/porsi', category: 'sayuran', emoji: '🥙' },
+            { id: 22, name: 'Tempe Kacang Pjg', price: 12500, unit: '/porsi', category: 'lainnya', emoji: '🌱' },
+            { id: 23, name: 'Tumis Paya Muda', price: 12500, unit: '/porsi', category: 'sayuran', emoji: '🥬' },
+            { id: 24, name: 'Tumis Labu Lakrits', price: 12500, unit: '/porsi', category: 'sayuran', emoji: '🎃' },
+            { id: 25, name: 'Sawi Putih Wortel', price: 12500, unit: '/porsi', category: 'sayuran', emoji: '🥬' },
+            { id: 26, name: 'Pokcoy Wortel', price: 12500, unit: '/porsi', category: 'sayuran', emoji: '🥬' },
+            { id: 27, name: 'Rujak Wortel', price: 12500, unit: '/porsi', category: 'buah', emoji: '🥕' },
+            { id: 28, name: 'Tahu Kacang Pjg', price: 12500, unit: '/porsi', category: 'lainnya', emoji: '🟫' },
+            { id: 29, name: 'Tumis Sawi Jjo Tahu', price: 12500, unit: '/porsi', category: 'sayuran', emoji: '🥬' },
+
+            // Rp 12,000 range
+            { id: 30, name: 'Sop Bakso', price: 14500, unit: '/porsi', category: 'lainnya', emoji: '🍲' },
+            { id: 31, name: 'Lodeh', price: 14500, unit: '/porsi', category: 'sayuran', emoji: '🥥' },
+            { id: 32, name: 'Labu Bakso', price: 14500, unit: '/porsi', category: 'sayuran', emoji: '🎃' },
+            { id: 33, name: 'Bakwan Jagung', price: 14500, unit: '/porsi', category: 'sayuran', emoji: '🌽' },
+            { id: 34, name: 'Bakwan Sayur+Tepung', price: 14500, unit: '/porsi', category: 'sayuran', emoji: '🥙' },
+            { id: 35, name: 'Bakwan Jamur', price: 14500, unit: '/porsi', category: 'sayuran', emoji: '🍄' },
+            { id: 36, name: 'Orek Tempe Teri', price: 14500, unit: '/porsi', category: 'lainnya', emoji: '🌱' },
+            { id: 37, name: 'Daun Singkong Rebon', price: 14500, unit: '/porsi', category: 'sayuran', emoji: '🌿' },
+            { id: 38, name: 'Daun Paya Rebon', price: 14500, unit: '/porsi', category: 'sayuran', emoji: '🌿' },
+            { id: 39, name: 'Oyong Bihun/Bakso', price: 14500, unit: '/porsi', category: 'sayuran', emoji: '🥒' },
+            { id: 40, name: 'Jamur Tiram Telur', price: 14500, unit: '/porsi', category: 'sayuran', emoji: '🍄' },
+            { id: 41, name: 'Bening Daun Kelor', price: 14500, unit: '/porsi', category: 'sayuran', emoji: '🌿' },
+            { id: 42, name: 'Orek Tempe/Kacang', price: 14500, unit: '/porsi', category: 'lainnya', emoji: '🌱' },
+            { id: 43, name: 'Terong Jjo Teri', price: 14500, unit: '/porsi', category: 'sayuran', emoji: '🍆' },
+
+            // Rp 13,000 range
+            { id: 44, name: 'Capcay Bakso', price: 15500, unit: '/porsi', category: 'sayuran', emoji: '🥗' },
+            { id: 45, name: 'Pare Rebon', price: 15500, unit: '/porsi', category: 'sayuran', emoji: '🥒' },
+            { id: 46, name: 'Balado Terong', price: 15500, unit: '/porsi', category: 'sayuran', emoji: '🍆' },
+            { id: 47, name: 'Pokcoy Bakso', price: 15500, unit: '/porsi', category: 'sayuran', emoji: '🥬' },
+            { id: 48, name: 'Sop Makaroni Bakso', price: 15500, unit: '/porsi', category: 'lainnya', emoji: '🍝' },
+            { id: 49, name: 'Sop Jamur Kuping Bakso', price: 15500, unit: '/porsi', category: 'sayuran', emoji: '🍄' },
+            { id: 50, name: 'Cuak Brokoli', price: 15500, unit: '/porsi', category: 'sayuran', emoji: '🥦' },
+            { id: 51, name: 'Balado Kentang Tahu', price: 15500, unit: '/porsi', category: 'sayuran', emoji: '🥔' },
+
+            // Rp 15,000 range
+            { id: 52, name: 'Sop Kimlo', price: 17500, unit: '/porsi', category: 'lainnya', emoji: '🍲' },
+            { id: 53, name: 'Bobor Bayam Lempuh', price: 17500, unit: '/porsi', category: 'sayuran', emoji: '🥬' },
+            { id: 54, name: 'Sop Telur Puyuh Bakso', price: 17500, unit: '/porsi', category: 'lainnya', emoji: '🥚' },
+            { id: 55, name: 'Paket Tahu Isi', price: 17500, unit: '/porsi', category: 'lainnya', emoji: '🟫' },
+            { id: 56, name: 'Paket Martabak Lumpia', price: 17500, unit: '/porsi', category: 'lainnya', emoji: '🌯' },
+            { id: 57, name: 'Bakwan Jagung +Tepung', price: 17500, unit: '/porsi', category: 'sayuran', emoji: '🌽' },
+            { id: 58, name: 'Paket Mie Bakso', price: 17500, unit: '/porsi', category: 'lainnya', emoji: '🍜' },
+            { id: 59, name: 'Balado Telur Puyuh Tahu', price: 17500, unit: '/porsi', category: 'lainnya', emoji: '🥚' },
+            { id: 60, name: 'Teri Kacang', price: 17500, unit: '/porsi', category: 'lainnya', emoji: '🐟' },
+            { id: 61, name: 'Kikil Cabe Ijo', price: 17500, unit: '/porsi', category: 'lainnya', emoji: '🥩' },
+            { id: 62, name: 'Japu Cimplui', price: 17500, unit: '/porsi', category: 'lainnya', emoji: '🐟' },
+
+            // Rp 22,000 range
+            { id: 63, name: 'Lele Bumbu Isi 4 Ekor', price: 24500, unit: '/porsi', category: 'lainnya', emoji: '🐟' },
+            { id: 64, name: 'Ikan Patin Fresh 1kg', price: 24500, unit: '/kg', category: 'lainnya', emoji: '🐟' },
+
+            // Rp 25,000 range
+            { id: 65, name: 'Ikan Kembung Bumbu Isi 4 Udang 250g', price: 27500, unit: '/porsi', category: 'lainnya', emoji: '🐟' },
+
+            // Rp 30,000 range
+            { id: 66, name: 'Balado Udang Tahu', price: 32500, unit: '/porsi', category: 'lainnya', emoji: '🦐' },
+            { id: 67, name: 'Daging Tetelam Sapi 1/4kg', price: 32500, unit: '/250g', category: 'lainnya', emoji: '🥩' },
+            { id: 68, name: 'Cumi Asin 1/4', price: 32500, unit: '/250g', category: 'lainnya', emoji: '🦑' },
+
+            // Rp 35,000 range
+            { id: 69, name: 'Ayam Terasi Daun Jeruk 1/2 Ekor', price: 37500, unit: '/porsi', category: 'lainnya', emoji: '🐔' },
+            { id: 70, name: 'Ayam Ketumbar 1/2 Ekor', price: 37500, unit: '/porsi', category: 'lainnya', emoji: '🐔' },
+            { id: 71, name: 'Ayam Ungkep 1/2 Ekor', price: 37500, unit: '/porsi', category: 'lainnya', emoji: '🐔' },
+            { id: 72, name: 'Bebek Turun Tulang 1/2kg', price: 37500, unit: '/500g', category: 'lainnya', emoji: '🦆' },
+            { id: 73, name: 'Dada Fillet Potong Dadu 1/2kg', price: 37500, unit: '/500g', category: 'lainnya', emoji: '🐔' }
         ];
 
         // Populate category & product grid
@@ -699,6 +792,35 @@
       <div class="card"><div class="product-img"><div class="quality"></div><div class="fresh">SEGAR</div><div style="font-size:38px">${p.emoji}</div></div>
         <div class="product-info"><h4>${p.name}</h4><div class="product-price">Rp${p.price.toLocaleString()}</div><p style="font-size:11px;color:#7f8c8d">${p.unit}</p>
           <button class="btn-add" data-id="${i}">+ Keranjang</button></div></div>`);
+
+        let currentCategory = null;
+
+        document.querySelectorAll('#cat-grid .card').forEach((card, i) => {
+            card.dataset.cat = categories[i].id;
+            card.addEventListener('click', () => {
+                // mark active
+                document.querySelectorAll('#cat-grid .card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                // set filter and refresh
+                if (card.dataset.cat === 'all') {
+                    currentCategory = null;
+                } else {
+                    currentCategory = card.dataset.cat;
+                }
+
+                filterProductGrid();
+            });
+        });
+
+        function filterProductGrid() {
+            document.querySelectorAll('#product-grid .card').forEach((card, i) => {
+                const prodCat = products[i].category;
+                card.style.display =
+                    (!currentCategory || currentCategory === prodCat)
+                        ? 'block'
+                        : 'none';
+            });
+        }
 
         // State
         let cart = [];
@@ -715,6 +837,23 @@
                 setTimeout(() => e.target.textContent = '+ Keranjang', 900);
             }
         });
+
+        function subtotal() {
+            return cart.reduce((s, c) => s + products[c.id].price * c.qty, 0);
+        }
+
+        // function subtotal() { return cart.reduce((s, c) => s + products[c.id].price * c.qty, 0) }
+        function chg(idx, delta) { cart[idx].qty += delta; if (cart[idx].qty <= 0) cart.splice(idx, 1); updateBadge(); renderCart() }
+
+        function shippingFee() {
+            const totalQty = cart.reduce((sum, c) => sum + c.qty, 0);
+            const packages = Math.ceil(totalQty / SHIPPING_PACKAGE_SIZE);
+            return packages * SHIPPING_COST;
+        }
+
+        function grandTotal() {
+            return subtotal() + shippingFee() + MARGIN;
+        }
 
         function updateBadge() { badge.textContent = cart.reduce((t, i) => t + i.qty, 0) }
 
@@ -746,18 +885,22 @@
         function renderCart() {
             const wrap = document.getElementById('cart-items');
             wrap.innerHTML = '';
-            if (cart.length === 0) { wrap.innerHTML = '<p style="text-align:center;padding:40px">Keranjang masih kosong 🛒</p>'; document.getElementById('pay-btn').disabled = true } else {
+            if (cart.length === 0) {
+                wrap.innerHTML = '<p style="text-align:center;padding:40px">Keranjang masih kosong 🛒</p>'; document.getElementById('pay-btn').disabled = true
+                document.getElementById('subtotal').textContent = 'Rp' + subtotal().toLocaleString();
+
+            } else {
                 document.getElementById('pay-btn').disabled = false;
                 cart.forEach((row, idx) => {
                     const p = products[row.id];
                     wrap.innerHTML += `<div class="cart-item"><span>${p.name}</span><div class="qty"><button onclick="chg(${idx},-1)">−</button><span>${row.qty}</span><button onclick="chg(${idx},1)">+</button></div><span>Rp${(p.price * row.qty).toLocaleString()}</span></div>`;
                 });
+                document.getElementById('subtotal').textContent = 'Rp' + subtotal().toLocaleString();
             }
-            document.getElementById('subtotal').textContent = 'Rp' + subtotal().toLocaleString();
+
             document.getElementById('cart-screen').classList.add('active');
         }
-        function subtotal() { return cart.reduce((s, c) => s + products[c.id].price * c.qty, 0) }
-        function chg(idx, delta) { cart[idx].qty += delta; if (cart[idx].qty <= 0) cart.splice(idx, 1); updateBadge(); renderCart() }
+
 
         // Checkout
         function pay() { if (cart.length === 0) return; alert('Terima kasih, pesanan Anda diproses!'); cart = []; updateBadge(); show('home') }
