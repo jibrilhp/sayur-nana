@@ -919,6 +919,11 @@
             if (screen === 'home') document.getElementById('home-screen').classList.add('active');
             if (screen === 'cart') renderCart();
             if (screen === 'profile') document.getElementById('profile-screen').classList.add('active');
+            if (screen === 'history')  {
+                alert('Fitur ini belum tersedia. Silakan coba lagi nanti.');
+                return;
+            }
+            // document.getElementById('history-screen').classList.add('active');
             // active nav highlight
             document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.screen === screen));
         }
