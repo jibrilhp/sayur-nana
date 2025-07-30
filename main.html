@@ -536,6 +536,10 @@
             cursor: pointer
         }
     </style>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+
 </head>
 
 <body>
@@ -582,6 +586,8 @@
                 <div id="cart-items"></div>
                 <div class="subtotal">Subtotal: <span id="subtotal">Rp0</span></div>
                 <button class="btn-checkout" onclick="pay()" id="pay-btn">Bayar Sekarang</button>
+
+                <div id="qrcode-container" style="text-align:center; margin-top:16px;"></div>
             </div>
         </section>
 
@@ -674,8 +680,56 @@
 
     </div>
 
+
+
+
     <!-- ==========  DATA & LOGIC  ========== -->
     <script>
+
+        // CRC16‑CCITT (poly 0x1021, init 0xFFFF)
+        function crc16(qrisStr) {
+            let crc = 0xFFFF;
+            for (let pos = 0; pos < qrisStr.length; pos++) {
+                crc ^= qrisStr.charCodeAt(pos) << 8;
+                for (let i = 0; i < 8; i++) {
+                    if (crc & 0x8000) {
+                        crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+                    } else {
+                        crc = (crc << 1) & 0xFFFF;
+                    }
+                }
+            }
+            return crc.toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        function convertQrisToDynamic(staticQris, amount, serviceFee = null, isPercent = false) {
+            // strip off old CRC
+            let base = staticQris.slice(0, -4);
+
+            // mark as dynamic
+            base = base.replace("010211", "010212");
+
+            // amount field: tag 54 + LL + amount
+            const amtStr = String(amount);
+            let dynamic = `54${amtStr.length.toString().padStart(2, "0")}${amtStr}`;
+
+            // optional service fee
+            if (serviceFee != null) {
+                const fee = String(serviceFee);
+                // 56 = rupiah, 57 = percent
+                const tag = isPercent ? "55020357" : "55020256";
+                dynamic += `${tag}${fee.length.toString().padStart(2, "0")}${fee}`;
+            }
+
+            // re‑assemble: everything before “5802ID”, then dynamic, then after
+            const [head, tail] = base.split("5802ID");
+            const withoutCrc = head + dynamic + "5802ID" + tail;
+
+            // append new CRC16
+            return withoutCrc + crc16(withoutCrc);
+        }
+
+
         const SHIPPING_PACKAGE_SIZE = 30;
         const SHIPPING_COST = 1500;  // per package of up to 30 items
         const MARGIN = 2500;          // per transaction
@@ -903,7 +957,27 @@
 
 
         // Checkout
-        function pay() { if (cart.length === 0) return; alert('Terima kasih, pesanan Anda diproses!'); cart = []; updateBadge(); show('home') }
+        function pay() {
+            if (!cart.length) return;
+
+            // 1) build your dynamic QRIS string as before
+            const amount = subtotal();
+            const qrisStatic = "00020101021126610014COM.GO-JEK.WWW01189360091436625330240210G6625330240303UMI51440014ID.CO.QRIS.WWW0215ID10243572160000303UMI5204549953033605802ID5919Toko Jibs, CILANDAK6015JAKARTA SELATAN61051243062070703A016304F0EA";
+            const qrisDynamic = convertQrisToDynamic(qrisStatic, amount /*, fee, isPercent */);
+
+            // 2) clear any previous QR canvas & add a fresh one
+            const container = document.getElementById('qrcode-container');
+            container.innerHTML = '<h5> Silahkan bayar menggunakan QRIS ini untuk melanjutkan, bila sudah kirim ke WA: +628152222731 </h5><canvas id="qrcode-canvas"></canvas>';
+
+            // 3) generate the QR
+            const canvas = document.getElementById('qrcode-canvas');
+            new QRious({
+                element: canvas,
+                value: qrisDynamic,
+                size: 250
+            });
+
+        }
 
         // Live search
         document.getElementById('search').addEventListener('input', e => {
@@ -915,7 +989,14 @@
         });
 
         updateBadge(); // init
+
+
+
     </script>
+
+
+
+
 </body>
 
 </html>
