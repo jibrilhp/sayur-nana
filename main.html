@@ -636,14 +636,14 @@
         <!-- =================  PROFILE  ================= -->
         <section class="screen" id="profile-screen">
             <header class="row between">
-                <h2 style="font-size:18px">👤 Profil</h2><button class="chat-btn" onclick="show('home')">←
-                    Beranda</button>
+                <h2 style="font-size:18px">👤 Profil</h2>
+                <!-- <button class="chat-btn" onclick="show('cart')">← Cart</button> -->
             </header>
             <div class="profile-box">
                 <div class="avatar">👩‍🍳</div>
-                <h3>Mba Nana</h3>
-                <p>Pedagang Sayur • Jakarta Timur</p>
-                <button onclick="alert('Fitur segera hadir ✨')">Edit Profil</button>
+                <h3>Pembeli handal</h3>
+                <p>Customer • Kebagusan City Apartement</p>
+                <button onclick="editProfile()">Edit Profil</button>
             </div>
         </section>
 
@@ -955,10 +955,101 @@
             document.getElementById('cart-screen').classList.add('active');
         }
 
+        // ————————————————————————————————————————————————
+        // PROFILE: prompt user to edit + save to localStorage
+        // ————————————————————————————————————————————————
+        function renderProfile() {
+            const prof = loadProfile();
+            if (!prof) return;
+            document.querySelector('#profile-screen h3').textContent = prof.name;
+            document.querySelector('#profile-screen p').textContent =
+                prof.phone + ' • ' + prof.division;
+        }
+
+
+        function editProfile() {
+            const current = loadProfile() || { name: '', phone: '', division: '' };
+            const name = prompt('Nama lengkap:', current.name) || current.name;
+            const phone = prompt('Nomor telepon:', current.phone) || current.phone;
+            const division = prompt('Unit kamar:', current.division) || current.division;
+            const prof = { name, phone, division };
+            localStorage.setItem('Mbanana_profile', JSON.stringify(prof));
+            renderProfile();
+        }
+
+        // wire up your existing “Edit Profil” button:
+        document.querySelector('#profile-screen button').onclick = editProfile;
+
+        // render on page‑load
+        renderProfile();
+
+        function loadProfile() {
+            const stored = localStorage.getItem('Mbanana_profile');
+            if (!stored) return null;
+            try {
+                return JSON.parse(stored);
+            } catch {
+                return null;
+            }
+        }
+
 
         // Checkout
-        function pay() {
+        async function pay() {
             if (!cart.length) return;
+
+            if (cart.length === 0) {
+                alert('Keranjang masih kosong! Silakan tambahkan produk terlebih dahulu.');
+                show('home');
+                return;
+            }
+            const profile = loadProfile();
+            if (!profile) {
+                alert('Silakan isi profil Anda terlebih dahulu!');
+                show('profile');
+                return;
+            }
+
+            const payload = {
+                profile,
+                items: cart.map(c => ({
+                    emoji: products[c.id].emoji,
+                    name: products[c.id].name,
+                    unit_price: products[c.id].price,
+                    qty: c.qty,
+                    subtotal: products[c.id].price * c.qty
+                })),
+                total: subtotal(),
+                timestamp: new Date().toISOString()
+            };
+
+            // disable button to prevent double‑submit
+            const btn = document.getElementById('pay-btn');
+            btn.disabled = true;
+            btn.textContent = 'Sedang memproses…';
+
+            try {
+                const res = await fetch(
+                    'https://license.dtskul-ai.ghanemtech.co.id/n8n/webhook/05b2cb68-0883-4f09-9b71-4a1d9bd0cdf3',
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    }
+                );
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                // success!
+                alert('Terima kasih—pesanan Anda sudah terkirim!');
+                cart = [];
+                updateBadge();
+                show('home');
+            } catch (err) {
+                console.error(err);
+                alert('Gagal mengirim pesanan. Silakan coba lagi.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Bayar Sekarang';
+            }
 
             // 1) build your dynamic QRIS string as before
             const amount = subtotal();
