@@ -1044,7 +1044,7 @@
                 );
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 // success!
-                alert('Terima kasih—pesanan Anda sudah terkirim!');
+                alert('Terima kasih pesanan Anda sudah diterima! Silakan bayar melalui QRIS yang tersedia.');
                 cart = [];
                 updateBadge();
                 // show('home');
@@ -1063,7 +1063,7 @@
 
             // 2) clear any previous QR canvas & add a fresh one
             const container = document.getElementById('qrcode-container');
-            container.innerHTML = '<h5> Silahkan bayar menggunakan QRIS ini untuk melanjutkan, bila sudah kirim ke WA: +628152222731 </h5><canvas id="qrcode-canvas"></canvas>';
+            container.innerHTML = '<h5> Silahkan bayar menggunakan QRIS ini untuk melanjutkan, bila sudah kirim ke WA: <a target="_blank" href="https://wa.me/628152222731">+628152222731</a> </h5><canvas id="qrcode-canvas"></canvas>';
 
             // 3) generate the QR
             const canvas = document.getElementById('qrcode-canvas');
